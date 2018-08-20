@@ -1,3 +1,7 @@
 #!/usr/bin/env ruby
 
 puts "To be implemented."
+
+loop do
+  sleep 60
+end
