@@ -125,6 +125,7 @@ DEPENDENCIES
   govuk-lint (~> 3.8)
   govuk_app_config (~> 1.8)
   govuk_test (~> 0.1)
+  rake (~> 12.3)
   rspec-core (~> 3.8)
   rspec-expectations (~> 3.8)
   rspec-mocks (~> 3.8)
