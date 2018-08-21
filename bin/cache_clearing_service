@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-puts "To be implemented."
+require_relative "../app/environment"
 
-loop do
-  sleep 60
-end
+Listener.call
