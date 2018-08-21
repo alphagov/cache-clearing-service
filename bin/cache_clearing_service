@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 
-puts "To be implemented."
+require_relative "../app/environment"
+
+logger = CacheClearingService.config.logger
+
+logger.info "To be implemented."
 
 loop do
   sleep 60
