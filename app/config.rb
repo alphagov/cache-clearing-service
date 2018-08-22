@@ -1,3 +1,5 @@
+require 'pathname'
+
 class Config
   def initialize(environment)
     @environment = environment || "development"
