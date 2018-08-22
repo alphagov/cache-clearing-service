@@ -8,9 +8,12 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    amq-protocol (2.3.0)
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
     ast (2.4.0)
+    bunny (2.11.0)
+      amq-protocol (~> 2.3.0)
     capybara (3.6.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -37,6 +40,8 @@ GEM
       sentry-raven (~> 2.7.1)
       statsd-ruby (~> 1.4.0)
       unicorn (~> 5.4.0)
+    govuk_message_queue_consumer (3.2.1)
+      bunny (~> 2.11)
     govuk_test (0.1.0)
       capybara
       chromedriver-helper
@@ -124,6 +129,7 @@ PLATFORMS
 DEPENDENCIES
   govuk-lint (~> 3.8)
   govuk_app_config (~> 1.8)
+  govuk_message_queue_consumer (~> 3.2)
   govuk_test (~> 0.1)
   rake (~> 12.3)
   rspec-core (~> 3.8)
