@@ -1,4 +1,4 @@
-require 'govuk_app_config'
+require_relative 'app/environment'
 
 begin
   require 'rspec/core/rake_task'
