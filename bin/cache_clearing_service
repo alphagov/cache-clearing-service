@@ -1,5 +1,2 @@
-#!/usr/bin/env ruby
-
-require_relative "../app/environment"
-
-Listener.call
+#!/usr/bin/env bash
+bundle exec rake message_queue:consumer
