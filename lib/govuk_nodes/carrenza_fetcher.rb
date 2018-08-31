@@ -12,7 +12,7 @@ class GovukNodes
 
     def instances_of_class(node_class)
       url = "#{puppetdb_node_url}?#{query_string(node_class)}"
-      json_response = open(url).read
+      json_response = URI.open(url).read
       JSON.parse(json_response)
     end
 
