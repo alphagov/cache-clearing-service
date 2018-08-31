@@ -3,6 +3,9 @@ ENV["GOVUK_APP_DOMAIN"] = "test.gov.uk"
 
 require_relative "../app/environment"
 
+require "webmock/rspec"
+WebMock.disable_net_connect!
+
 Dir[File.join(CacheClearingService.config.app_root, "spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
