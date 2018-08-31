@@ -22,14 +22,14 @@ private
       response = http.request(PurgeRequest.new(url))
       status = response.code.to_i
 
-      unless (200...299).include?(status)
+      unless (200...299).cover?(status)
         raise VarnishCacheClearFailed.new("Received #{status} for `#{url}`")
       end
     end
   end
 
   class PurgeRequest < Net::HTTPRequest
-    METHOD = "PURGE"
+    METHOD = "PURGE".freeze
     REQUEST_HAS_BODY = false
     RESPONSE_HAS_BODY = true
   end

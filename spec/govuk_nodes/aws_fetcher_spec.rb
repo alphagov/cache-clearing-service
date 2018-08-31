@@ -49,14 +49,14 @@ RSpec.describe GovukNodes::AWSFetcher do
     it "allows underscores or hyphens" do
       expect(aws_client).to receive(:describe_instances).with(
         filters: array_including(
-          { name: "tag:aws_migration", values: [node_class] },
+          name: "tag:aws_migration", values: [node_class],
         )
       ).and_return(empty_result)
       subject.hostnames_of_class("email_alert_api")
 
       expect(aws_client).to receive(:describe_instances).with(
         filters: array_including(
-          { name: "tag:aws_migration", values: [node_class] },
+          name: "tag:aws_migration", values: [node_class],
         )
       ).and_return(empty_result)
       subject.hostnames_of_class("email-alert-api")
@@ -73,11 +73,12 @@ RSpec.describe GovukNodes::AWSFetcher do
       let(:response_code) { 500 }
 
       it "raises exceptions" do
-        aws_client.stub_responses(:describe_instances, {
+        aws_client.stub_responses(
+          :describe_instances,
           status_code: response_code,
           headers: {},
           body: "",
-        })
+        )
 
         expect {
           subject.hostnames_of_class(node_class)
@@ -89,7 +90,8 @@ RSpec.describe GovukNodes::AWSFetcher do
       let(:response_code) { 403 }
 
       it "raises an exception" do
-        aws_client.stub_responses(:describe_instances,
+        aws_client.stub_responses(
+          :describe_instances,
           status_code: response_code,
           headers: {},
           body: "",
@@ -105,7 +107,8 @@ RSpec.describe GovukNodes::AWSFetcher do
       let(:response_code) { 302 }
 
       it "raises an exception" do
-        aws_client.stub_responses(:describe_instances,
+        aws_client.stub_responses(
+          :describe_instances,
           status_code: response_code,
           headers: {},
           body: "",
