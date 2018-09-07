@@ -19,7 +19,7 @@ RSpec.describe VarnishClearer do
     subject.clear_for(base_path)
 
     cache_hosts.each do |cache_host|
-      url = "http://#{cache_host}#{base_path}"
+      url = "http://#{cache_host}:7999#{base_path}"
       expect(a_request(:purge, url)).to have_been_made.once
     end
   end
