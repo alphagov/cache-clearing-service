@@ -14,11 +14,12 @@ private
   attr_reader :logger
 
   def purge(base_path, cache_hostname)
-    cache_hostname_with_port = "#{cache_hostname}:7999"
     url = "http://#{cache_hostname}:7999#{base_path}"
     logger.info("Purging `#{url}`")
 
-    Net::HTTP.start(cache_hostname_with_port) do |http|
+    uri = URI(url)
+
+    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
       response = http.request(PurgeRequest.new(url))
       status = response.code.to_i
 
