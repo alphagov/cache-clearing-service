@@ -20,7 +20,7 @@ private
     uri = URI(url)
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
-      response = http.request(PurgeRequest.new(url))
+      response = http.request(PurgeRequest.new(base_path))
       status = response.code.to_i
 
       unless (200...299).cover?(status)
