@@ -25,7 +25,7 @@ GEM
     aws-sigv4 (1.0.3)
     bunny (2.11.0)
       amq-protocol (~> 2.3.0)
-    capybara (3.6.0)
+    capybara (3.7.1)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -56,7 +56,7 @@ GEM
       unicorn (~> 5.4.0)
     govuk_message_queue_consumer (3.2.1)
       bunny (~> 2.11)
-    govuk_test (0.1.0)
+    govuk_test (0.2.0)
       capybara
       chromedriver-helper
       puma
@@ -155,7 +155,7 @@ DEPENDENCIES
   govuk-lint (~> 3.9)
   govuk_app_config (~> 1.8)
   govuk_message_queue_consumer (~> 3.2)
-  govuk_test (~> 0.1)
+  govuk_test (~> 0.2)
   rake (~> 12.3)
   rspec-core (~> 3.8)
   rspec-expectations (~> 3.8)
