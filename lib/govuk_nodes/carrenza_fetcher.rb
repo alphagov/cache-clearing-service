@@ -18,7 +18,7 @@ class GovukNodes
 
     def query_string(node_class)
       hyphenated_node_class = node_class.tr("_", "-")
-      query = %{["or", ["~", ["fact", "fqdn"], "^#{hyphenated_node_class}-\\d+."]]}
+      query = %{["or", ["~", ["fact", "fqdn"], "^#{hyphenated_node_class}-\\\\d+\\\\."]]}
 
       URI.encode_www_form(query: query)
     end

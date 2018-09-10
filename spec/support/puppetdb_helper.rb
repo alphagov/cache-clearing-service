@@ -13,7 +13,7 @@ module PuppetDBHelper
   end
 
   def db_url(base_url, node_class)
-    query = '["or", ["~", ["fact", "fqdn"], "^' + node_class + '-\d+."]]'
+    query = '["or", ["~", ["fact", "fqdn"], "^' + node_class + '-\\\d+\\\."]]'
     query_string = URI.encode_www_form(query: query)
     "#{base_url}?#{query_string}"
   end
