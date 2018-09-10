@@ -8,7 +8,7 @@ RSpec.describe Purger do
       stub_request(:purge, /cache/)
     end
 
-    it "purges the varnish cache for the base path in the payload" do
+    it "purges the cache for the base path in the payload" do
       subject.purge(url)
       expect(a_request(:purge, url)).to have_been_made.once
     end

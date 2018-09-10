@@ -3,20 +3,16 @@ RSpec.describe FastlyClearer do
 
   subject { described_class.new(Logger.new("/dev/null")) }
 
-  before do
-    stub_request(:purge, /cache/)
-  end
-
   it "purges the Fastly cache for the base path in the payload" do
-    subject.clear_for(base_path)
-
     url = "https://www.test.gov.uk#{base_path}"
-    expect(a_request(:purge, url)).to have_been_made.once
+    expect_any_instance_of(Purger).to receive(:purge).with(url)
+
+    subject.clear_for(base_path)
   end
 
   context "if the Fastly cache clear fails" do
     before do
-      stub_request(:purge, /cache/).to_return(status: 500)
+      expect_any_instance_of(Purger).to receive(:purge).and_raise(Purger::PurgeFailed.new)
     end
 
     it "raises an error" do
