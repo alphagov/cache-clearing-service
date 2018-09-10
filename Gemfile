@@ -6,6 +6,7 @@ gem "govuk_message_queue_consumer", "~> 3.2"
 gem "rake", "~> 12.3"
 
 group :development, :test do
+  gem "byebug"
   gem "govuk-lint", "~> 3.9"
   gem "govuk_test", "~> 0.2"
   gem "rspec-core", "~> 3.8"
@@ -15,5 +16,6 @@ end
 
 group :test do
   gem "climate_control"
+  gem "timecop"
   gem "webmock"
 end
