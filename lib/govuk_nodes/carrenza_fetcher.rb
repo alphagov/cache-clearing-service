@@ -12,7 +12,12 @@ class GovukNodes
 
     def instances_of_class(node_class)
       url = "#{puppetdb_node_url}?#{query_string(node_class)}"
-      json_response = URI.open(url).read
+      headers = {
+        "Accept" => "application/json",
+        "User-Agent" => "cache-clearing-service",
+      }
+
+      json_response = URI.open(url, headers).read
       JSON.parse(json_response)
     end
 
