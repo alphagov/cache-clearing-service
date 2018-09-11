@@ -5,10 +5,16 @@ RSpec.describe Processor do
 
   before do
     allow_any_instance_of(VarnishClearer).to receive(:clear_for)
+    allow_any_instance_of(FastlyClearer).to receive(:clear_for)
   end
 
   it "clears the varnish cache for the base path" do
     expect_any_instance_of(VarnishClearer).to receive(:clear_for).with(base_path)
+    subject.process(message)
+  end
+
+  it "clears the Fastly cache for the base path" do
+    expect_any_instance_of(FastlyClearer).to receive(:clear_for).with(base_path)
     subject.process(message)
   end
 
