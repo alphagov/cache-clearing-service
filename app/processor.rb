@@ -9,12 +9,21 @@ class Processor
   end
 
   def process(message)
-    base_path = message.payload.fetch("base_path")
-
-    varnish_clearer.clear_for(base_path)
-    fastly_clearer.clear_for(base_path)
+    paths_for(content_item: message.payload).each do |path|
+      varnish_clearer.clear_for(path)
+      fastly_clearer.clear_for(path)
+    end
 
     message.ack
+  end
+
+  def paths_for(content_item:)
+    routes = content_item.fetch("routes", [])
+    redirects = content_item.fetch("redirects", [])
+
+    (routes + redirects)
+      .select { |route| route.fetch("type") == "exact" }
+      .map { |route| route.fetch("path") }
   end
 
 private
