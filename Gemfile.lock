@@ -26,7 +26,7 @@ GEM
     bunny (2.11.0)
       amq-protocol (~> 2.3.0)
     byebug (10.0.2)
-    capybara (3.7.1)
+    capybara (3.7.2)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -35,7 +35,7 @@ GEM
       xpath (~> 3.1)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
-    chromedriver-helper (1.2.0)
+    chromedriver-helper (2.1.0)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
     climate_control (0.2.0)
@@ -57,7 +57,7 @@ GEM
       unicorn (~> 5.4.0)
     govuk_message_queue_consumer (3.2.1)
       bunny (~> 2.11)
-    govuk_test (0.2.0)
+    govuk_test (0.2.1)
       capybara
       chromedriver-helper
       puma
