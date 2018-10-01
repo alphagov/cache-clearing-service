@@ -2,6 +2,8 @@ require "net/http"
 require "lib/govuk_nodes"
 
 class Processor
+  attr_reader :logger
+
   def initialize
     @logger = CacheClearingService.config.logger
     @varnish_clearer = VarnishClearer.new(logger)
@@ -9,9 +11,14 @@ class Processor
   end
 
   def process(message)
-    paths_for(content_item: message.payload).each do |path|
-      varnish_clearer.clear_for(path)
-      fastly_clearer.clear_for(path)
+    begin
+      paths_for(content_item: message.payload).each do |path|
+        varnish_clearer.clear_for(path)
+        fastly_clearer.clear_for(path)
+      end
+    rescue StandardError => e
+      logger.error(e)
+      GovukError.notify(e)
     end
 
     message.ack
@@ -28,5 +35,5 @@ class Processor
 
 private
 
-  attr_reader :fastly_clearer, :logger, :varnish_clearer
+  attr_reader :fastly_clearer, :varnish_clearer
 end

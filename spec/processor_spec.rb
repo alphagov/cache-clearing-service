@@ -89,4 +89,22 @@ RSpec.describe Processor do
     include_examples "acks messages"
     include_examples "doesn't clear the cache"
   end
+
+  context "when an error is raised" do
+    let(:payload) do
+      { "routes" => [{ "path" => "/error-cache-clearing", "type" => "exact" }] }
+    end
+    let(:error) { FastlyClearer::FastlyCacheClearFailed.new("Non") }
+
+    before do
+      allow_any_instance_of(FastlyClearer).to receive(:clear_for)
+        .and_raise(error)
+    end
+
+    it "logs the error" do
+      expect(subject.logger).to receive(:error).with(error)
+      expect(GovukError).to receive(:notify).with(error)
+      subject.process(message)
+    end
+  end
 end
