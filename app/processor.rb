@@ -18,6 +18,7 @@ class Processor
       end
     rescue StandardError => e
       logger.error(e)
+      GovukError.notify(e)
     end
 
     message.ack

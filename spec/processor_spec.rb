@@ -103,6 +103,7 @@ RSpec.describe Processor do
 
     it "logs the error" do
       expect(subject.logger).to receive(:error).with(error)
+      expect(GovukError).to receive(:notify).with(error)
       subject.process(message)
     end
   end
