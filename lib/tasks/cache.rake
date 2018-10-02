@@ -12,5 +12,5 @@ namespace :cache do
   end
 
   desc "Clear cache for a given base path"
-  task clear: %i(clear_varnish clear_fastly)
+  task :clear, [:base_path] => %i(clear_varnish clear_fastly)
 end
