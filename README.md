@@ -14,7 +14,7 @@ Varnish for that path.
 ### Running the application
 
 ```sh
-$ bundle exec bin/cache_clearing_service
+$ bin/cache_clearing_service
 ```
 
 ### Running the test suite
