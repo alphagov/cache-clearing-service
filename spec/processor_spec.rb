@@ -118,8 +118,8 @@ RSpec.describe Processor do
     end
 
     it "logs the error" do
-      expect(subject.logger).to receive(:error).with(error)
-      expect(GovukError).to receive(:notify).with(error)
+      expect(subject.logger).to receive(:error).with(error).twice
+      expect(GovukError).to receive(:notify).with(error).twice
       subject.process(message)
     end
   end
