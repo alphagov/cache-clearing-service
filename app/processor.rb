@@ -25,6 +25,15 @@ class Processor
   end
 
   def paths_for(content_item:)
+    routes_and_redirects_for(content_item: content_item) \
+      + content_api_paths_for(content_item: content_item)
+  end
+
+private
+
+  attr_reader :fastly_clearer, :varnish_clearer
+
+  def routes_and_redirects_for(content_item:)
     routes = content_item.fetch("routes", [])
     redirects = content_item.fetch("redirects", [])
 
@@ -33,7 +42,9 @@ class Processor
       .map { |route| route.fetch("path") }
   end
 
-private
-
-  attr_reader :fastly_clearer, :varnish_clearer
+  def content_api_paths_for(content_item:)
+    base_path = content_item["base_path"]
+    return [] unless base_path
+    ["/api/content#{base_path}"]
+  end
 end
