@@ -13,14 +13,14 @@ RSpec.describe Processor do
     end
   end
 
-  shared_examples "doesn't clear the cache" do
-    it "doesn't clear the Varnish cache" do
-      expect_any_instance_of(VarnishClearer).not_to receive(:clear_for)
+  shared_examples "doesn't clear the cache" do |path|
+    it "doesn't clear the Varnish cache for #{path}" do
+      expect_any_instance_of(VarnishClearer).not_to receive(:clear_for).with(path)
       subject.process(message)
     end
 
-    it "doesn't clear the Fastly cache" do
-      expect_any_instance_of(FastlyClearer).not_to receive(:clear_for)
+    it "doesn't clear the Fastly cache for #{path}" do
+      expect_any_instance_of(FastlyClearer).not_to receive(:clear_for).with(path)
       subject.process(message)
     end
   end
@@ -40,41 +40,53 @@ RSpec.describe Processor do
   context "when the route is exact" do
     let(:payload) do
       {
+        "base_path" => "/government/news/govuk-implements-new-cache-clearing",
         "routes" => [{ "path" => "/government/news/govuk-implements-new-cache-clearing", "type" => "exact" }],
       }
     end
 
     include_examples "acks messages"
     include_examples "clears the cache", "/government/news/govuk-implements-new-cache-clearing"
+    include_examples "clears the cache", "/api/content/government/news/govuk-implements-new-cache-clearing"
   end
 
   context "when the redirect is exact" do
     let(:payload) do
       {
+        "base_path" => "/government/news/govuk-implements-new-cache-clearing",
         "redirects" => [{ "path" => "/government/news/govuk-implements-new-cache-clearing", "type" => "exact" }],
       }
     end
 
     include_examples "acks messages"
     include_examples "clears the cache", "/government/news/govuk-implements-new-cache-clearing"
+    include_examples "clears the cache", "/api/content/government/news/govuk-implements-new-cache-clearing"
   end
 
   context "when the route is a prefix" do
     let(:payload) do
-      { "routes" => [{ "path" => "/government", "type" => "prefix" }] }
+      {
+        "base_path" => "/government/news/govuk-implements-new-cache-clearing",
+        "routes" => [{ "path" => "/government", "type" => "prefix" }],
+      }
     end
 
     include_examples "acks messages"
-    include_examples "doesn't clear the cache"
+    include_examples "doesn't clear the cache", "/government/news/govuk-implements-new-cache-clearing"
+    include_examples "clears the cache", "/api/content/government/news/govuk-implements-new-cache-clearing"
   end
 
   context "when the redirect is a prefix" do
     let(:payload) do
-      { "redirects" => [{ "path" => "/government", "type" => "prefix" }] }
+      {
+        "base_path" => "/government/news/govuk-implements-new-cache-clearing",
+        "redirects" => [{ "path" => "/government", "type" => "prefix" }],
+      }
     end
 
     include_examples "acks messages"
-    include_examples "doesn't clear the cache"
+    include_examples "doesn't clear the cache", "/government/news/govuk-implements-new-cache-clearing"
+    include_examples "clears the cache", "/api/content/government/news/govuk-implements-new-cache-clearing"
   end
 
   context "when the content has no routes or redirects" do
@@ -88,11 +100,15 @@ RSpec.describe Processor do
 
     include_examples "acks messages"
     include_examples "doesn't clear the cache"
+    include_examples "clears the cache", "/api/content/test"
   end
 
   context "when an error is raised" do
     let(:payload) do
-      { "routes" => [{ "path" => "/error-cache-clearing", "type" => "exact" }] }
+      {
+        "base_path" => "/error-cache-clearing",
+        "routes" => [{ "path" => "/error-cache-clearing", "type" => "exact" }],
+      }
     end
     let(:error) { FastlyClearer::FastlyCacheClearFailed.new("Non") }
 
