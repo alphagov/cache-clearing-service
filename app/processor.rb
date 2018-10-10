@@ -11,11 +11,9 @@ class Processor
   end
 
   def process(message)
-    begin
-      paths_for(content_item: message.payload).each do |path|
-        varnish_clearer.clear_for(path)
-        fastly_clearer.clear_for(path)
-      end
+    paths_for(content_item: message.payload).each do |path|
+      varnish_clearer.clear_for(path)
+      fastly_clearer.clear_for(path)
     rescue StandardError => e
       logger.error(e)
       GovukError.notify(e)
