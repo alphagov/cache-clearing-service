@@ -25,6 +25,11 @@ private
     METHOD = "PURGE".freeze
     REQUEST_HAS_BODY = false
     RESPONSE_HAS_BODY = true
+
+    def initialize(*args)
+      super(*args)
+      self["Fastly-Soft-Purge"] = "1"
+    end
   end
 
   class PurgeFailed < StandardError; end

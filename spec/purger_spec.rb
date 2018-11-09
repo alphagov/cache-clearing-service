@@ -6,6 +6,7 @@ RSpec.describe Purger do
   context "if the purge request succeeds" do
     before do
       stub_request(:purge, /cache/)
+        .with(headers: { "Fastly-Soft-Purge": "1" })
     end
 
     it "purges the cache for the base path in the payload" do
@@ -16,7 +17,9 @@ RSpec.describe Purger do
 
   context "if the purge request fails" do
     before do
-      stub_request(:purge, /cache/).to_return(status: 500)
+      stub_request(:purge, /cache/)
+        .with(headers: { "Fastly-Soft-Purge": "1" })
+        .to_return(status: 500)
     end
 
     it "raises an error" do
