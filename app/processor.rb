@@ -42,7 +42,6 @@ private
 
   def content_api_paths_for(content_item:)
     base_path = content_item["base_path"]
-    return [] unless base_path
-    ["/api/content#{base_path}"]
+    base_path ? ["/api/content#{base_path}"] : []
   end
 end
