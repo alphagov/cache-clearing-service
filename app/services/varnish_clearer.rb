@@ -5,10 +5,12 @@ class VarnishClearer
   end
 
   def clear_for(base_path)
-    GovukNodes.of_class("cache").each do |cache_hostname|
-      purger.purge("http://#{cache_hostname}:7999#{base_path}")
-    rescue Purger::PurgeFailed => e
-      raise VarnishCacheClearFailed, e
+    GovukStatsd.time("purge.varnish") do
+      GovukNodes.of_class("cache").each do |cache_hostname|
+        purger.purge("http://#{cache_hostname}:7999#{base_path}")
+      rescue Purger::PurgeFailed => e
+        raise VarnishCacheClearFailed, e
+      end
     end
   end
 

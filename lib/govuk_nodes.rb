@@ -33,7 +33,9 @@ class GovukNodes
   end
 
   def of_class(node_class)
-    fetcher.hostnames_of_class(node_class)
+    GovukStatsd.time("nodes.fetch") do
+      fetcher.hostnames_of_class(node_class)
+    end
   end
 
 private
