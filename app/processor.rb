@@ -1,5 +1,6 @@
 require "net/http"
 require "lib/govuk_nodes"
+require "thwait"
 
 class Processor
   attr_reader :logger
@@ -12,10 +13,10 @@ class Processor
 
   def process(message)
     threads = paths_for(content_item: message.payload).map do |path|
-      Thread.new { purge_path(path) }
+      Thread.new(path) { |p| purge_path(p) }
     end
 
-    threads.each(&:join)
+    ThreadsWait.all_waits(*threads)
 
     message.ack
   end
