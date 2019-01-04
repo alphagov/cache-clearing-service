@@ -12,16 +12,20 @@ class Processor
 
   def process(message)
     paths_for(content_item: message.payload).each do |path|
-      GovukStatsd.time("purge.all") do
-        varnish_clearer.clear_for(path)
-        fastly_clearer.clear_for(path)
-      end
-    rescue StandardError => e
-      logger.error(e)
-      GovukError.notify(e)
+      purge_path(path)
     end
 
     message.ack
+  end
+
+  def purge_path(path)
+    GovukStatsd.time("purge.all") do
+      varnish_clearer.clear_for(path)
+      fastly_clearer.clear_for(path)
+    end
+  rescue StandardError => e
+    logger.error(e)
+    GovukError.notify(e)
   end
 
   def paths_for(content_item:)
