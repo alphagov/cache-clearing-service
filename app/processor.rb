@@ -11,9 +11,11 @@ class Processor
   end
 
   def process(message)
-    paths_for(content_item: message.payload).each do |path|
-      purge_path(path)
+    threads = paths_for(content_item: message.payload).map do |path|
+      Thread.new { purge_path(path) }
     end
+
+    threads.each(&:join)
 
     message.ack
   end
