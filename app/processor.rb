@@ -11,17 +11,23 @@ class Processor
   end
 
   def process(message)
-    paths_for(content_item: message.payload).each do |path|
-      GovukStatsd.time("purge.all") do
-        varnish_clearer.clear_for(path)
-        fastly_clearer.clear_for(path)
-      end
-    rescue StandardError => e
-      logger.error(e)
-      GovukError.notify(e)
+    threads = paths_for(content_item: message.payload).map do |path|
+      Thread.new { purge_path(path) }
     end
 
+    threads.each(&:join)
+
     message.ack
+  end
+
+  def purge_path(path)
+    GovukStatsd.time("purge.all") do
+      varnish_clearer.clear_for(path)
+      fastly_clearer.clear_for(path)
+    end
+  rescue StandardError => e
+    logger.error(e)
+    GovukError.notify(e)
   end
 
   def paths_for(content_item:)
