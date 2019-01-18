@@ -1,0 +1,135 @@
+#!/usr/bin/env ruby
+
+require "json"
+require "time"
+require "timeout"
+
+# Outputs:
+#
+# Orphaned follow line:
+# {"@message":"/data/vhost/cache-clearing-service/releases/20190118095352/app/processor.rb:27:in `block in purge_path'","@timestamp":"2019-01-18T09:57:40+00:00","worker_id":"low.2","worker_number":"2","worker_type":"low"}
+#
+# Solo prime line:
+# {"@message":"Purging: https://www.integration.publishing.service.gov.uk/api/content/government/publications/sample-path","@timestamp":"2019-01-18T09:57:41.084115","library":null,"log_level":"INFO","worker_id":"low.1","worker_number":"1","worker_pid":"15556","worker_type":"low"}
+
+#
+# Prime line with follow lines:
+# {"@message":"Received 403 for `https://www.integration.publishing.service.gov.uk/government/publications/sample-path` (FastlyClearer::FastlyCacheClearFailed)\n/data/vhost/cache-clearing-service/releases/20190118095352/app/services/fastly_clearer.rb:12:in `rescue in clear_for'\n/data/vhost/cache-clearing-service/releases/20190118095352/app/services/fastly_clearer.rb:7:in `clear_for'\n/data/vhost/cache-clearing-service/releases/20190118095352/app/processor.rb:27:in `block in purge_path'\n/data/vhost/cache-clearing-service/shared/bundle/ruby/2.5.0/gems/statsd-ruby-1.4.0/lib/statsd.rb:412:in `time'\n/data/vhost/cache-clearing-service/releases/20190118095352/app/processor.rb:25:in `purge_path'\n/data/vhost/cache-clearing-service/releases/20190118095352/app/processor.rb:16:in `block (2 levels) in process'","@timestamp":"2019-01-18T09:57:41.128170","library":null,"log_level":"ERROR","worker_id":"low.1","worker_number":"1","worker_pid":"15556","worker_type":"low"}
+
+
+DEBUG = ARGV.first == "--debug".freeze
+
+TIMEOUT_IN_SECONDS = 0.5
+
+WORKER_TYPE = /(?<worker_type>\w+)/.freeze
+WORKER_NUMBER = /(?:\.(?<worker_number>\d+))/.freeze
+WORKER_ID = /(?<worker_id>#{WORKER_TYPE}#{WORKER_NUMBER}?)/.freeze
+
+COARSE_TIMESTAMP = /(?<coarse_timestamp>\d{2}:\d{2}:\d{2})/.freeze
+FINE_TIMESTAMP = /(?<fine_timestamp>\S+)/.freeze
+FOREMAN_PREFIX = /#{COARSE_TIMESTAMP}\s+#{WORKER_ID}\s+\|/.freeze
+FULL_LOG_LEVEL = /(?<full_log_level>[[:upper:]]+)\s+--/.freeze
+LIBRARY = /(?<library>[^:]+)?:/.freeze
+PID = /#(?<pid>\d+)/.freeze
+SHORT_LOG_LEVEL = /[[:upper:]],/.freeze
+TIMESTAMP_AND_PID = /\[#{FINE_TIMESTAMP}\s+#{PID}\]/.freeze
+MESSAGE = /(?<message>.*)/.freeze
+
+PRIME_LINE = /^#{FOREMAN_PREFIX}\s+#{SHORT_LOG_LEVEL}\s+#{TIMESTAMP_AND_PID}\s+#{FULL_LOG_LEVEL}\s+#{LIBRARY}\s+#{MESSAGE}$/.freeze
+# 09:57:41 low.1    | E, [2019-01-18T09:57:41.129942 #15556] ERROR -- : Received 403 for `https://www.integration.publishing.service.gov.uk/api/content/government/publications/sample-path` (FastlyClearer::FastlyCacheClearFailed)
+
+FOLLOW_LINE = /^#{FOREMAN_PREFIX}\s+#{MESSAGE}$/.freeze
+# 09:57:41 low.1    | /data/vhost/cache-clearing-service/releases/20190118095352/app/services/fastly_clearer.rb:12:in `rescue in clear_for'
+
+def prime_line(input)
+  if (match = input.match(PRIME_LINE))
+    {
+      :@message => match[:message],
+      :@timestamp => Time.parse(match[:fine_timestamp]).getutc.iso8601(3),
+      library: match[:library],
+      log_level: match[:full_log_level],
+      worker_id: match[:worker_id],
+      worker_number: match[:worker_number],
+      worker_pid: match[:pid],
+      worker_type: match[:worker_type],
+    }
+  end
+end
+
+def follow_line(input)
+  if (match = input.match(FOLLOW_LINE))
+    {
+      :@message => match[:message],
+      :@timestamp => Time.parse(match[:coarse_timestamp]).getutc.iso8601(3),
+      worker_id: match[:worker_id],
+      worker_number: match[:worker_number],
+      worker_type: match[:worker_type],
+    }
+  end
+end
+
+def error(message)
+  {
+    :@message => message,
+  }
+end
+
+def sweep_primes
+  $current_primes.each do |k, (prime, updated_at)|
+    if Time.now > (updated_at + TIMEOUT_IN_SECONDS)
+      $current_primes.delete(k)
+
+      if DEBUG
+        puts "deleted prime for #{k}"
+      else
+        puts JSON.dump(prime)
+      end
+    end
+  end
+end
+
+def with_timeout
+  if $current_primes.any?
+    sweep_primes
+
+    Timeout::timeout(TIMEOUT_IN_SECONDS) do
+      yield
+    end
+  else
+    yield
+  end
+end
+
+$current_primes = {}
+
+loop do
+  with_timeout do
+    exit unless (input = STDIN.gets&.chomp)
+
+    if (output = prime_line(input))
+      final_output = $current_primes.delete(output[:worker_id])&.first
+
+      $current_primes[output[:worker_id]] = [output, Time.now]
+
+      if DEBUG
+        puts "Added prime for #{output[:worker_id]}"
+      end
+    elsif (output = follow_line(input))
+      if (prime = $current_primes[output[:worker_id]]&.first)
+        prime[:@message] += "\n#{output[:@message]}"
+        $current_primes[output[:worker_id]] = [prime, Time.now]
+      else
+        final_output = output
+      end
+    else
+      final_output = error("Unable to parse log line: #{input}")
+    end
+
+    if final_output
+      puts JSON.dump(final_output) unless DEBUG
+    end
+  end
+rescue Timeout::Error
+  puts "Timeout waiting for follow line for #{$current_primes.count} primes" if DEBUG
+  next
+end

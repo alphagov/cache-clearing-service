@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-exec bundle exec rake message_queue:consumer
+exec bundle exec foreman start | "${BASH_SOURCE%/*}/json_logger"
