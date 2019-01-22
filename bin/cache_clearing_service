@@ -1,3 +1,16 @@
 #!/usr/bin/env bash
 
-exec bundle exec foreman start | "${BASH_SOURCE%/*}/json_logger"
+kill_processgroup() {
+  kill -- -$1
+}
+
+bundle exec foreman start | "${BASH_SOURCE%/*}/json_logger" &
+
+bundle_pid=$(jobs -x echo %1)
+bundle_pgid=$(ps -o pgid= $bundle_pid)
+
+trap "kill_processgroup $bundle_pgid" TERM INT HUP
+
+wait
+
+kill_processgroup $bundle_pgid
