@@ -92,4 +92,13 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.before(:example) do
+    Timecop.freeze(Time.local(1994))
+  end
+
+  config.after(:example) do
+    Timecop.freeze(Time.local(1994))
+    GovukNodes.clear_cache
+  end
 end

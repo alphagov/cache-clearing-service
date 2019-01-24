@@ -6,15 +6,6 @@ RSpec.describe GovukNodes do
   let(:node_class) { "email_alert_api" }
   let(:stack_name) { "green" }
 
-  before(:example) do
-    Timecop.freeze(Time.local(1994))
-  end
-
-  after(:example) do
-    Timecop.freeze(Time.local(1994))
-    GovukNodes.clear_cache
-  end
-
   context "if the AWS flag is on" do
     around do |example|
       ClimateControl.modify AWS_STACKNAME: stack_name do

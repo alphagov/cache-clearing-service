@@ -12,13 +12,11 @@ class Processor
   end
 
   def process(message)
-    if should_purge?(message.payload)
-      threads = paths_for(content_item: message.payload).map do |path|
-        Thread.new(path) { |p| purge_path(p) }
-      end
-
-      ThreadsWait.all_waits(*threads)
+    threads = paths_for(content_item: message.payload).map do |path|
+      Thread.new(path) { |p| purge_path(p) }
     end
+
+    ThreadsWait.all_waits(*threads)
 
     message.ack
   end
@@ -41,14 +39,6 @@ class Processor
 private
 
   attr_reader :fastly_clearer, :varnish_clearer
-
-  def should_purge?(content_item)
-    updated_at = content_item["updated_at"]
-    return true unless updated_at
-
-    delta = Time.now - Time.iso8601(updated_at)
-    delta < 60 * 60 # 1 hour
-  end
 
   def routes_and_redirects_for(content_item:)
     routes = content_item.fetch("routes", [])
