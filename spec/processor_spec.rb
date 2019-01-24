@@ -123,4 +123,40 @@ RSpec.describe Processor do
       subject.process(message)
     end
   end
+
+  context "when the page was updated over an hour ago" do
+    around(:each) do |example|
+      Timecop.freeze(Time.new(2018, 1, 1, 10)) { example.run }
+    end
+
+    let(:payload) do
+      {
+        "base_path" => "/old-page",
+        "routes" => [{ "path" => "/old-page", "type" => "exact" }],
+        "updated_at" => "2018-01-01T08:00:00Z",
+      }
+    end
+
+    include_examples "acks messages"
+    include_examples "doesn't clear the cache", "/old-page"
+    include_examples "doesn't clear the cache", "/api/content/old-page"
+  end
+
+  context "when the page was updated less than an hour ago" do
+    around(:each) do |example|
+      Timecop.freeze(Time.new(2018, 1, 1, 10)) { example.run }
+    end
+
+    let(:payload) do
+      {
+        "base_path" => "/old-page",
+        "routes" => [{ "path" => "/old-page", "type" => "exact" }],
+        "updated_at" => "2018-01-01T09:30:00Z",
+      }
+    end
+
+    include_examples "acks messages"
+    include_examples "clears the cache", "/old-page"
+    include_examples "clears the cache", "/api/content/old-page"
+  end
 end
