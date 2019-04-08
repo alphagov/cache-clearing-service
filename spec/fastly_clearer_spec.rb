@@ -21,4 +21,12 @@ RSpec.describe FastlyClearer do
       }.to raise_error(FastlyClearer::FastlyCacheClearFailed)
     end
   end
+
+  context "if a full URL is provided" do
+    it "clears the full URL rather than prepending the website root" do
+      url = "https://assets.example.gov.uk#{base_path}"
+      expect_any_instance_of(Purger).to receive(:purge).with(url)
+      subject.clear_for(url)
+    end
+  end
 end

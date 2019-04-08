@@ -5,10 +5,10 @@ namespace :cache do
     clearer.clear_for(args[:base_path])
   end
 
-  desc "Clear Fastly cache for a given base path"
-  task :clear_fastly, [:base_path] do |_, args|
+  desc "Clear Fastly cache for a given base path or URL"
+  task :clear_fastly, [:base_path_or_url] do |_, args|
     clearer = FastlyClearer.new(Logger.new(STDOUT))
-    clearer.clear_for(args[:base_path])
+    clearer.clear_for(args[:base_path_or_url])
   end
 
   desc "Clear cache for a given base path"
