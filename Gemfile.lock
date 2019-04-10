@@ -25,8 +25,8 @@ GEM
     aws-sigv4 (1.0.3)
     aws-xray-sdk (0.10.2)
       oj (~> 3.0)
-    bunny (2.11.0)
-      amq-protocol (~> 2.3.0)
+    bunny (2.14.1)
+      amq-protocol (~> 2.3, >= 2.3.0)
     byebug (11.0.1)
     capybara (3.15.0)
       addressable
@@ -62,7 +62,7 @@ GEM
       sentry-raven (~> 2.7.1)
       statsd-ruby (~> 1.4.0)
       unicorn (~> 5.4.0)
-    govuk_message_queue_consumer (3.2.1)
+    govuk_message_queue_consumer (3.3.0)
       bunny (~> 2.11)
     govuk_test (0.4.1)
       capybara
@@ -175,7 +175,7 @@ DEPENDENCIES
   foreman
   govuk-lint (~> 3.11)
   govuk_app_config (~> 1.13)
-  govuk_message_queue_consumer (~> 3.2)
+  govuk_message_queue_consumer (~> 3.3)
   govuk_test (~> 0.4)
   plek (~> 2.1)
   pry (~> 0.12)
