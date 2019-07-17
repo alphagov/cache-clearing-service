@@ -59,7 +59,7 @@ GEM
       sentry-raven (>= 2.7.1, < 2.10.0)
       statsd-ruby (~> 1.4.0)
       unicorn (>= 5.4, < 5.6)
-    govuk_message_queue_consumer (3.4.0)
+    govuk_message_queue_consumer (3.5.0)
       bunny (~> 2.11)
     govuk_test (1.0.0)
       capybara
@@ -174,7 +174,7 @@ DEPENDENCIES
   foreman
   govuk-lint (~> 3.11)
   govuk_app_config (~> 1.20)
-  govuk_message_queue_consumer (~> 3.4)
+  govuk_message_queue_consumer (~> 3.5)
   govuk_test (~> 1.0)
   plek (~> 3.0)
   pry (~> 0.12)
