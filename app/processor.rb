@@ -13,6 +13,12 @@ class Processor
 
   def process(message)
     threads = paths_for(content_item: message.payload).map do |path|
+      if path.nil?
+        logger.error("nil path from payload: #{message.payload}")
+
+        next
+      end
+
       Thread.new(path) { |p| purge_path(p) }
     end
 
