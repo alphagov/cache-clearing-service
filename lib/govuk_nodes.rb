@@ -45,7 +45,7 @@ private
   end
 
   def aws?
-    ENV["AWS_STACKNAME"].present?
+    !(ENV["AWS_STACKNAME"].nil? || ENV["AWS_STACKNAME"].empty?)
   end
 
   class MissingConfigurationError < StandardError; end
