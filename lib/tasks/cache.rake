@@ -16,5 +16,8 @@ namespace :cache do
   end
 
   desc "Clear cache for a given base path"
-  task :clear, [:base_path] => %i(clear_varnish clear_fastly)
+  task :clear, [:base_path] do |_, args|
+    Rake::Task["cache:clear_varnish"].invoke(args[:base_path])
+    Rake::Task["cache:clear_fastly"].invoke(args[:base_path])
+  end
 end
