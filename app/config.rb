@@ -1,4 +1,4 @@
-require 'pathname'
+require "pathname"
 
 class Config
   def initialize(environment)

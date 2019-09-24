@@ -40,7 +40,7 @@ RSpec.describe GovukNodes::AWSFetcher do
           { name: "tag:aws_stackname", values: [stack_name] },
           { name: "tag:aws_migration", values: [node_class] },
           { name: "instance-state-name", values: %w[running] },
-        ]
+        ],
       ).and_return(empty_result)
 
       subject.hostnames_of_class(node_class)
@@ -50,14 +50,14 @@ RSpec.describe GovukNodes::AWSFetcher do
       expect(aws_client).to receive(:describe_instances).with(
         filters: array_including(
           name: "tag:aws_migration", values: [node_class],
-        )
+        ),
       ).and_return(empty_result)
       subject.hostnames_of_class("email_alert_api")
 
       expect(aws_client).to receive(:describe_instances).with(
         filters: array_including(
           name: "tag:aws_migration", values: [node_class],
-        )
+        ),
       ).and_return(empty_result)
       subject.hostnames_of_class("email-alert-api")
     end
