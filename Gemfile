@@ -12,9 +12,9 @@ group :development, :test do
   gem "govuk-lint", "~> 4.0"
   gem "govuk_test", "~> 1.0"
   gem "pry", "~> 0.12"
-  gem "rspec-core", "~> 3.8"
-  gem "rspec-expectations", "~> 3.8"
-  gem "rspec-mocks", "~> 3.8"
+  gem "rspec-core", "~> 3.9"
+  gem "rspec-expectations", "~> 3.9"
+  gem "rspec-mocks", "~> 3.9"
 end
 
 group :test do
