@@ -57,11 +57,11 @@ GEM
       unicorn (>= 5.4, < 5.6)
     govuk_message_queue_consumer (3.5.0)
       bunny (~> 2.11)
-    govuk_test (1.0.1)
+    govuk_test (1.0.2)
       capybara
       puma
       selenium-webdriver (>= 3.142)
-      webdrivers (~> 4)
+      webdrivers (>= 4)
     hashdiff (1.0.0)
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
