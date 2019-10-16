@@ -23,6 +23,7 @@ GEM
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.1.0)
       aws-eventstream (~> 1.0, >= 1.0.2)
+    brakeman (4.6.1)
     bunny (2.14.2)
       amq-protocol (~> 2.3, >= 2.3.0)
     byebug (11.0.1)
@@ -57,7 +58,8 @@ GEM
       unicorn (>= 5.4, < 5.6)
     govuk_message_queue_consumer (3.5.0)
       bunny (~> 2.11)
-    govuk_test (1.0.2)
+    govuk_test (1.0.3)
+      brakeman (~> 4.6)
       capybara
       puma
       selenium-webdriver (>= 3.142)
