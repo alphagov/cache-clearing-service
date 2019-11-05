@@ -9,7 +9,7 @@ gem "rake", "~> 13.0"
 
 group :development, :test do
   gem "byebug"
-  gem "govuk-lint", "~> 4.1"
+  gem "govuk-lint", "~> 4.2"
   gem "govuk_test", "~> 1.0"
   gem "pry", "~> 0.12"
   gem "rspec-core", "~> 3.9"
