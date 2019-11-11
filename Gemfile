@@ -9,12 +9,12 @@ gem "rake", "~> 13.0"
 
 group :development, :test do
   gem "byebug"
-  gem "govuk-lint", "~> 4.3"
   gem "govuk_test", "~> 1.0"
   gem "pry", "~> 0.12"
   gem "rspec-core", "~> 3.9"
   gem "rspec-expectations", "~> 3.9"
   gem "rspec-mocks", "~> 3.9"
+  gem "rubocop-govuk"
 end
 
 group :test do
