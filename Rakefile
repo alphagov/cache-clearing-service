@@ -8,4 +8,4 @@ end
 
 Dir.glob('lib/tasks/*.rake').each { |r| load r }
 
-task default: %i[lint spec]
+task default: %i[spec]
