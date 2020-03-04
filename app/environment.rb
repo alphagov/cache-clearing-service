@@ -15,4 +15,4 @@ require "govuk_app_config"
 
 CacheClearingService.config.logger.level = Logger::DEBUG
 
-Dir.glob("app/**/*.rb").each { |r| require r }
+Dir.glob("app/**/*.rb").sort.each { |r| require r }
