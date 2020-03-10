@@ -1,11 +1,8 @@
-require_relative 'app/environment'
+require_relative "app/environment"
+require "rspec/core/rake_task"
 
-begin
-  require 'rspec/core/rake_task'
-  RSpec::Core::RakeTask.new(:spec)
-rescue LoadError # rubocop:disable Lint/HandleExceptions
-end
+RSpec::Core::RakeTask.new(:spec)
 
-Dir.glob('lib/tasks/*.rake').each { |r| load r }
+Dir.glob("lib/tasks/*.rake").each { |r| load r }
 
 task default: %i[spec]
