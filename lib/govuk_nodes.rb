@@ -2,13 +2,13 @@ require_relative "govuk_nodes/aws_fetcher"
 require_relative "govuk_nodes/carrenza_fetcher"
 
 class GovukNodes
-  CACHE_TIME = (60 * 5) # 5 minutes
+  CACHE_TIME = (60 * 5) #  5 minutes
 
   def self.of_class(node_class)
     if (cached_nodes = cached_nodes_for_class(node_class))
       cached_nodes
     else
-      nodes = self.new.of_class(node_class)
+      nodes = new.of_class(node_class)
       cache(nodes, node_class)
       nodes
     end
