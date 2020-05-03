@@ -1,6 +1,6 @@
 RSpec.describe VarnishClearer do
   let(:base_path) { "/government/news/govuk-implements-new-cache-clearing" }
-  let(:cache_hosts) { %w(cache-1 cache-2) }
+  let(:cache_hosts) { %w[cache-1 cache-2] }
 
   subject { described_class.new(Logger.new("/dev/null")) }
 
