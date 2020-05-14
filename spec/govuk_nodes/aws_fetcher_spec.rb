@@ -6,7 +6,7 @@ RSpec.describe GovukNodes::AWSFetcher do
   let(:node_class) { "email_alert_api" }
   let(:stack_name) { "green" }
 
-  let!(:aws_client) {
+  let!(:aws_client) do
     Aws::EC2::Client.new(stub_responses: {
       describe_instances: {
         reservations: [
@@ -15,11 +15,11 @@ RSpec.describe GovukNodes::AWSFetcher do
         ],
       },
     })
-  }
+  end
 
-  let(:empty_result) {
+  let(:empty_result) do
     Aws::EC2::Types::DescribeInstancesResult.new(reservations: [])
-  }
+  end
 
   subject { described_class.new }
 

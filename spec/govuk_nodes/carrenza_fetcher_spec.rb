@@ -4,12 +4,12 @@ require "govuk_nodes/carrenza_fetcher"
 
 RSpec.describe GovukNodes::CarrenzaFetcher do
   let(:response_code) { 200 }
-  let(:response_body) {
+  let(:response_body) do
     [
       puppet_instance("email_alert_api-1"),
       puppet_instance("email_alert_api-2"),
     ].to_json
-  }
+  end
 
   let(:node_class) { "email-alert-api" }
   let(:puppetdb_node_url) { "http://puppetdb.cluster/v2/nodes" }

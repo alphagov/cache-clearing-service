@@ -15,7 +15,7 @@ class GovukNodes
   end
 
   def self.cached_nodes_for_class(node_class)
-    return unless @cached_nodes&.has_key?(node_class)
+    return unless @cached_nodes&.key?(node_class)
 
     (nodes, cached_at) = @cached_nodes.fetch(node_class)
     still_fresh = (Time.now.to_i - cached_at) < CACHE_TIME
