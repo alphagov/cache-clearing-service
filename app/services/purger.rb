@@ -12,7 +12,7 @@ class Purger
       status = response.code.to_i
 
       unless (200...299).cover?(status)
-        raise PurgeFailed.new("Received #{status} for `#{url}`")
+        raise PurgeFailed, "Received #{status} for `#{url}`"
       end
     end
   end

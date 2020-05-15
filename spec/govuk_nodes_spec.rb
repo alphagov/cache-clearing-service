@@ -13,11 +13,11 @@ RSpec.describe GovukNodes do
       end
     end
 
-    let(:fetcher_response) {
+    let(:fetcher_response) do
       %w[
         email_alert_api-1
       ]
-    }
+    end
 
     let(:aws_fetcher) { double(:aws_fetcher) }
 
@@ -48,11 +48,11 @@ RSpec.describe GovukNodes do
   end
 
   context "if the AWS flag is off" do
-    let(:fetcher_response) {
+    let(:fetcher_response) do
       %w[
         email_alert_api-1
       ]
-    }
+    end
 
     let(:carrenza_fetcher) { double(:carrenza_fetcher) }
 
