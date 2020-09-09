@@ -1,6 +1,9 @@
 ENV["GOVUK_ENV"] = "test"
 ENV["GOVUK_APP_DOMAIN"] = "test.gov.uk"
 
+require "simplecov"
+SimpleCov.start
+
 require_relative "../app/environment"
 
 require "webmock/rspec"
