@@ -1,19 +1,20 @@
 source "http://rubygems.org"
 
-gem "aws-sdk-ec2", "~> 1"
+gem "aws-sdk-ec2"
 gem "foreman"
-gem "govuk_app_config", "~> 2.3"
-gem "govuk_message_queue_consumer", "~> 3.5"
-gem "plek", "~> 4.0"
-gem "rake", "~> 13.0"
+gem "govuk_app_config"
+gem "govuk_message_queue_consumer"
+gem "plek"
+gem "rake"
+gem "thwait"
 
 group :development, :test do
   gem "byebug"
-  gem "govuk_test", "~> 1.0"
-  gem "pry", "~> 0.13"
-  gem "rspec-core", "~> 3.9"
-  gem "rspec-expectations", "~> 3.9"
-  gem "rspec-mocks", "~> 3.9"
+  gem "govuk_test"
+  gem "pry"
+  gem "rspec-core"
+  gem "rspec-expectations"
+  gem "rspec-mocks"
   gem "rubocop-govuk"
 end
 
