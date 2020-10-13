@@ -1,3 +1,4 @@
+require "json"
 require "pathname"
 
 class Config
@@ -13,10 +14,11 @@ class Config
 
   def logger
     @logger ||= begin
-      logfile = File.open(log_path, "a")
-      logfile.sync = true
+      formatter = proc do |_severity, datetime, _progname, msg|
+        JSON.dump("@timestamp" => datetime.iso8601, message: msg) + "\n"
+      end
 
-      Logger.new(MultiIO.new(STDOUT, logfile), "daily")
+      Logger.new(STDOUT, formatter: formatter)
     end
   end
 
@@ -24,19 +26,5 @@ private
 
   def log_path
     File.join(app_root, "log", "#{environment}.log")
-  end
-
-  class MultiIO
-    def initialize(*targets)
-      @targets = targets
-    end
-
-    def write(*args)
-      @targets.each { |t| t.write(*args) }
-    end
-
-    def close
-      @targets.each(&:close)
-    end
   end
 end
