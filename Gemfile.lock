@@ -48,7 +48,7 @@ GEM
       multipart-post (>= 1.2, < 3)
       ruby2_keywords
     foreman (0.87.1)
-    govuk_app_config (2.5.0)
+    govuk_app_config (2.5.1)
       logstasher (>= 1.2.2, < 1.4.0)
       sentry-raven (~> 3.1.1)
       statsd-ruby (~> 1.4.0)
