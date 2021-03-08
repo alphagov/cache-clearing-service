@@ -1,7 +1,7 @@
 namespace :cache do
   desc "Clear Varnish cache for a given base path"
   task :clear_varnish, [:base_path] do |_, args|
-    clearer = VarnishClearer.new(Logger.new(STDOUT))
+    clearer = VarnishClearer.new(Logger.new($stdout))
     clearer.clear_for(args[:base_path])
   rescue StandardError => e
     puts "clear_varnish: error: #{e}"
@@ -9,7 +9,7 @@ namespace :cache do
 
   desc "Clear Fastly cache for a given base path or URL"
   task :clear_fastly, [:base_path_or_url] do |_, args|
-    clearer = FastlyClearer.new(Logger.new(STDOUT))
+    clearer = FastlyClearer.new(Logger.new($stdout))
     clearer.clear_for(args[:base_path_or_url])
   rescue StandardError => e
     puts "clear_fastly: error: #{e}"
