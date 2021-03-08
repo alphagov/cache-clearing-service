@@ -17,7 +17,7 @@ class GovukNodes
         "User-Agent" => "cache-clearing-service",
       }
 
-      json_response = URI.open(url, headers).read
+      json_response = URI.parse(url).read(headers)
       JSON.parse(json_response)
     end
 
