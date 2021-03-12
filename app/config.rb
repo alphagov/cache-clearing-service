@@ -16,7 +16,7 @@ class Config
       logfile = File.open(log_path, "a")
       logfile.sync = true
 
-      Logger.new(MultiIO.new(STDOUT, logfile), "daily")
+      Logger.new(MultiIO.new($stdout, logfile), "daily")
     end
   end
 
