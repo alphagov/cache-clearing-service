@@ -4,16 +4,14 @@ A message queue consumer application which clears Fastly and Varnish caches when
 
 ## Technical documentation
 
-### Running the application
+You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-docker) to run the tests. Follow [the usage instructions](https://github.com/alphagov/govuk-docker#usage) to get started.
 
-```sh
-$ bin/cache_clearing_service
-```
+**Use GOV.UK Docker to run any commands that follow.**
 
 ### Running the test suite
 
 ```sh
-$ bundle exec rspec
+bundle exec rake
 ```
 
 ## Licence
