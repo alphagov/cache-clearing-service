@@ -1,26 +1,17 @@
 # Cache Clearing Service
 
-This is a message queue consumer application which clears Fastly and Varnish
-caches when new content is published.
+A message queue consumer application which clears Fastly and Varnish caches when new content is published. Messages are read from the `published_documents` exchange which carries documents published from all publishing applications.
 
 ## Technical documentation
 
-Messages are read from the `published_documents` exchange which carries
-documents published from all publishing applications.
+You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-docker) to run the tests. Follow [the usage instructions](https://github.com/alphagov/govuk-docker#usage) to get started.
 
-When the service detects a published document it clears the cache in Fastly and
-Varnish for that path.
-
-### Running the application
-
-```sh
-$ bin/cache_clearing_service
-```
+**Use GOV.UK Docker to run any commands that follow.**
 
 ### Running the test suite
 
 ```sh
-$ bundle exec rspec
+bundle exec rake
 ```
 
 ## Licence
