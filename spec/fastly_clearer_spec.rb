@@ -4,9 +4,10 @@ RSpec.describe FastlyClearer do
 
   subject { described_class.new(Logger.new("/dev/null"), mock_purger) }
 
-  it "purges the Fastly cache for the base path in the payload" do
+  it "purges the Fastly cache for the base path in the payload, both with and without a GOV.UK account session cookie" do
     url = "https://www.test.gov.uk#{base_path}"
     expect(mock_purger).to receive(:purge).with(url)
+    expect(mock_purger).to receive(:purge).with(url, { "Cookie" => "__Host-govuk_account_session=1" })
 
     subject.clear_for(base_path)
   end
@@ -27,6 +28,7 @@ RSpec.describe FastlyClearer do
     it "clears the full URL rather than prepending the website root" do
       url = "https://assets.example.gov.uk#{base_path}"
       expect(mock_purger).to receive(:purge).with(url)
+      expect(mock_purger).to receive(:purge).with(url, { "Cookie" => "__Host-govuk_account_session=1" })
       subject.clear_for(url)
     end
   end

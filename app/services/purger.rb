@@ -3,12 +3,16 @@ class Purger
     @logger = logger
   end
 
-  def purge(url)
-    logger.info("Purging: #{url}")
+  def purge(url, extra_headers = {})
+    if extra_headers.empty?
+      logger.info("Purging: #{url}")
+    else
+      logger.info("Purging: #{url} #{extra_headers}")
+    end
 
     uri = URI(url)
     Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
-      response = http.request(PurgeRequest.new(uri.request_uri))
+      response = http.request(PurgeRequest.new(uri.request_uri, extra_headers))
       status = response.code.to_i
 
       unless (200...299).cover?(status)

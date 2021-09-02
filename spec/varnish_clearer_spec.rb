@@ -9,10 +9,11 @@ RSpec.describe VarnishClearer do
     allow(GovukNodes).to receive(:of_class).with("cache").and_return(cache_hosts)
   end
 
-  it "purges the Varnish cache for the base path in the payload" do
+  it "purges the Varnish cache for the base path in the payload, both with and without a GOV.UK account session" do
     cache_hosts.each do |cache_host|
       url = "http://#{cache_host}:7999#{base_path}"
       expect(mock_purger).to receive(:purge).with(url)
+      expect(mock_purger).to receive(:purge).with(url, { "GOVUK-Account-Session-Exists" => "1" })
     end
 
     subject.clear_for(base_path)
