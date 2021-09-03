@@ -1,7 +1,7 @@
 class VarnishClearer
-  def initialize(logger)
+  def initialize(logger, purger = nil)
     @logger = logger
-    @purger = Purger.new(logger)
+    @purger = purger || Purger.new(logger)
   end
 
   def clear_for(base_path)
