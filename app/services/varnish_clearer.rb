@@ -7,7 +7,9 @@ class VarnishClearer
   def clear_for(base_path)
     GovukStatsd.time("purge.varnish") do
       GovukNodes.of_class("cache").each do |cache_hostname|
-        purger.purge("http://#{cache_hostname}:7999#{base_path}")
+        url = "http://#{cache_hostname}:7999#{base_path}"
+        purger.purge(url)
+        purger.purge(url, { "GOVUK-Account-Session-Exists" => "1" })
       rescue Purger::PurgeFailed => e
         raise VarnishCacheClearFailed, e
       end

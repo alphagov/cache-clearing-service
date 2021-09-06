@@ -6,7 +6,9 @@ class FastlyClearer
 
   def clear_for(base_path_or_url)
     GovukStatsd.time("purge.fastly") do
-      purger.purge(full_url(base_path_or_url))
+      url = full_url(base_path_or_url)
+      purger.purge(url)
+      purger.purge(url, { "Cookie" => "__Host-govuk_account_session=1" })
     end
   rescue Purger::PurgeFailed => e
     raise FastlyCacheClearFailed, e
