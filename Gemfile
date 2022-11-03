@@ -15,7 +15,7 @@ group :development, :test do
   gem "rspec-core"
   gem "rspec-expectations"
   gem "rspec-mocks"
-  gem "rubocop-govuk", "4.7.0", require: false # Trialling pre-release
+  gem "rubocop-govuk", "4.8.0", require: false # Trialling pre-release
 end
 
 group :test do
