@@ -38,8 +38,8 @@ class Processor
   end
 
   def paths_for(content_item:)
-    routes_and_redirects_for(content_item: content_item) \
-      + content_api_paths_for(content_item: content_item)
+    routes_and_redirects_for(content_item:) \
+      + content_api_paths_for(content_item:)
   end
 
 private

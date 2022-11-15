@@ -25,7 +25,7 @@ class GovukNodes
       hyphenated_node_class = node_class.tr("_", "-")
       query = %(["or", ["~", ["fact", "fqdn"], "^#{hyphenated_node_class}-\\\\d+\\\\."]])
 
-      URI.encode_www_form(query: query)
+      URI.encode_www_form(query:)
     end
 
     def puppetdb_node_url

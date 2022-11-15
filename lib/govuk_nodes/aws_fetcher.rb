@@ -15,7 +15,7 @@ class GovukNodes
     end
 
     def filter(name, value)
-      { name: name, values: [value] }
+      { name:, values: [value] }
     end
 
     def instances_of_class(node_class)

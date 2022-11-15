@@ -1,5 +1,5 @@
 RSpec.describe Processor do
-  let(:message) { double(ack: nil, payload: payload) }
+  let(:message) { double(ack: nil, payload:) }
 
   before do
     allow_any_instance_of(VarnishClearer).to receive(:clear_for)
