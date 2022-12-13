@@ -12,6 +12,7 @@ COPY . ./
 FROM $base_image
 
 ENV GOVUK_APP_NAME=cache-clearing-service
+ENV GOVUK_ENV=deployment
 
 WORKDIR $APP_HOME
 COPY --from=builder $BUNDLE_PATH/ $BUNDLE_PATH/

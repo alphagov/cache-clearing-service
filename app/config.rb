@@ -12,31 +12,16 @@ class Config
   end
 
   def logger
-    @logger ||= begin
-      logfile = File.open(log_path, "a")
-      logfile.sync = true
-
-      Logger.new(MultiIO.new($stdout, logfile), "daily")
-    end
+    @logger ||= Logger.new(log_file)
   end
 
 private
 
-  def log_path
-    File.join(app_root, "log", "#{environment}.log")
-  end
-
-  class MultiIO
-    def initialize(*targets)
-      @targets = targets
-    end
-
-    def write(*args)
-      @targets.each { |t| t.write(*args) }
-    end
-
-    def close
-      @targets.each(&:close)
+  def log_file
+    if ENV["RAILS_LOG_TO_STDOUT"]
+      $stdout
+    else
+      File.open(File.join(app_root, "log", "#{environment}.log"), "a")
     end
   end
 end
