@@ -46,39 +46,4 @@ RSpec.describe GovukNodes do
       expect(aws_fetcher).to have_received(:hostnames_of_class).twice
     end
   end
-
-  context "if the AWS flag is off" do
-    let(:fetcher_response) do
-      %w[
-        email_alert_api-1
-      ]
-    end
-
-    let(:carrenza_fetcher) { double(:carrenza_fetcher) }
-
-    before do
-      allow(described_class::CarrenzaFetcher).to receive(:new).and_return(carrenza_fetcher)
-      allow(carrenza_fetcher).to receive(:hostnames_of_class).with(node_class)
-        .and_return(fetcher_response)
-    end
-
-    it "uses the Carrenza fetcher" do
-      expect(described_class.of_class(node_class)).to eq(fetcher_response)
-    end
-
-    it "caches node request calls for 5 minutes" do
-      described_class.of_class(node_class)
-      expect(carrenza_fetcher).to have_received(:hostnames_of_class).once
-
-      Timecop.freeze(Time.now + (60 * 4))
-
-      described_class.of_class(node_class)
-      expect(carrenza_fetcher).to have_received(:hostnames_of_class).once
-
-      Timecop.freeze(Time.now + (60 * 2))
-
-      described_class.of_class(node_class)
-      expect(carrenza_fetcher).to have_received(:hostnames_of_class).twice
-    end
-  end
 end
