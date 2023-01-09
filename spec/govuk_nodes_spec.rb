@@ -4,15 +4,8 @@ require "govuk_nodes"
 
 RSpec.describe GovukNodes do
   let(:node_class) { "email_alert_api" }
-  let(:stack_name) { "green" }
 
   context "if the AWS flag is on" do
-    around do |example|
-      ClimateControl.modify AWS_STACKNAME: stack_name do
-        example.run
-      end
-    end
-
     let(:fetcher_response) do
       %w[
         email_alert_api-1
