@@ -1,5 +1,4 @@
 require_relative "govuk_nodes/aws_fetcher"
-require_relative "govuk_nodes/carrenza_fetcher"
 
 class GovukNodes
   CACHE_TIME = (60 * 5) # 5 minutes
@@ -41,11 +40,7 @@ class GovukNodes
 private
 
   def fetcher
-    @fetcher ||= aws? ? AWSFetcher.new : CarrenzaFetcher.new
-  end
-
-  def aws?
-    !(ENV["AWS_STACKNAME"].nil? || ENV["AWS_STACKNAME"].empty?)
+    @fetcher ||= AWSFetcher.new
   end
 
   class MissingConfigurationError < StandardError; end
