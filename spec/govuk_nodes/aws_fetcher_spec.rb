@@ -4,7 +4,6 @@ require "govuk_nodes/aws_fetcher"
 
 RSpec.describe GovukNodes::AWSFetcher do
   let(:node_class) { "email_alert_api" }
-  let(:stack_name) { "green" }
 
   let!(:aws_client) do
     Aws::EC2::Client.new(stub_responses: {
@@ -27,17 +26,10 @@ RSpec.describe GovukNodes::AWSFetcher do
     allow(Aws::EC2::Client).to receive(:new).and_return(aws_client)
   end
 
-  around do |example|
-    ClimateControl.modify AWS_STACKNAME: stack_name do
-      example.run
-    end
-  end
-
   describe "#hostnames_of_class(node_class)" do
     it "queries AWS for the nodes" do
       expect(aws_client).to receive(:describe_instances).with(
         filters: [
-          { name: "tag:aws_stackname", values: [stack_name] },
           { name: "tag:aws_migration", values: [node_class] },
           { name: "instance-state-name", values: %w[running] },
         ],
