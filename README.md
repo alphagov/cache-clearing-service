@@ -1,6 +1,6 @@
 # Cache Clearing Service
 
-A message queue consumer application which clears Fastly and Varnish caches when new content is published. Messages are read from the `published_documents` exchange which carries documents published from all publishing applications.
+A message queue consumer application which clears the Fastly CDN cache when new content is published. Messages are read from the `published_documents` exchange which carries documents published from all publishing applications.
 
 ## Technical documentation
 

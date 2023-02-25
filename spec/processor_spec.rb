@@ -2,7 +2,6 @@ RSpec.describe Processor do
   let(:message) { double(ack: nil, payload:) }
 
   before do
-    allow_any_instance_of(VarnishClearer).to receive(:clear_for)
     allow_any_instance_of(FastlyClearer).to receive(:clear_for)
   end
 
@@ -14,11 +13,6 @@ RSpec.describe Processor do
   end
 
   shared_examples "doesn't clear the cache" do |path|
-    it "doesn't clear the Varnish cache for #{path}" do
-      expect_any_instance_of(VarnishClearer).not_to receive(:clear_for).with(path)
-      subject.process(message)
-    end
-
     it "doesn't clear the Fastly cache for #{path}" do
       expect_any_instance_of(FastlyClearer).not_to receive(:clear_for).with(path)
       subject.process(message)
@@ -26,11 +20,6 @@ RSpec.describe Processor do
   end
 
   shared_examples "clears the cache" do |path|
-    it "clears the varnish cache for #{path}" do
-      expect_any_instance_of(VarnishClearer).to receive(:clear_for).with(path)
-      subject.process(message)
-    end
-
     it "clears the Fastly cache for #{path}" do
       expect_any_instance_of(FastlyClearer).to receive(:clear_for).with(path)
       subject.process(message)
