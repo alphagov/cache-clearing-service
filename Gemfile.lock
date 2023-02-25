@@ -48,7 +48,6 @@ GEM
     docile (1.4.0)
     e2mmap (0.1.0)
     erubi (1.12.0)
-    foreman (0.87.2)
     govuk_app_config (7.0.0)
       logstasher (~> 2.1)
       plek (>= 4, < 6)
@@ -204,8 +203,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
-  foreman
-  govuk_app_config (~> 7.0.0)
+  govuk_app_config (>= 7.0.0)
   govuk_message_queue_consumer
   govuk_test
   plek

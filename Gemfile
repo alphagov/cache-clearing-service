@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
-gem "foreman"
-gem "govuk_app_config", "~>7.0.0"
+gem "govuk_app_config", ">= 7.0.0"
 gem "govuk_message_queue_consumer"
 gem "plek"
 gem "rake"
