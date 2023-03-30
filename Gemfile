@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "aws-sdk-ec2"
 gem "foreman"
-gem "govuk_app_config", "~>5.1.0"
+gem "govuk_app_config", "~>6.0.0"
 gem "govuk_message_queue_consumer"
 gem "plek"
 gem "rake"
