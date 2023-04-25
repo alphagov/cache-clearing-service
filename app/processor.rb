@@ -1,5 +1,4 @@
 require "net/http"
-require "lib/govuk_nodes"
 require "thwait"
 
 class Processor
@@ -7,7 +6,6 @@ class Processor
 
   def initialize
     @logger = CacheClearingService.config.logger
-    @varnish_clearer = VarnishClearer.new(logger)
     @fastly_clearer = FastlyClearer.new(logger)
   end
 
@@ -15,7 +13,6 @@ class Processor
     threads = paths_for(content_item: message.payload).map do |path|
       if path.nil?
         logger.error("nil path from payload: #{message.payload}")
-
         next
       end
 
@@ -29,7 +26,6 @@ class Processor
 
   def purge_path(path)
     GovukStatsd.time("purge.all") do
-      varnish_clearer.clear_for(path)
       fastly_clearer.clear_for(path)
     end
   rescue StandardError => e
@@ -44,7 +40,7 @@ class Processor
 
 private
 
-  attr_reader :fastly_clearer, :varnish_clearer
+  attr_reader :fastly_clearer
 
   def routes_and_redirects_for(content_item:)
     routes = content_item.fetch("routes", [])

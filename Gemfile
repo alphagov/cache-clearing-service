@@ -1,8 +1,6 @@
 source "https://rubygems.org"
 
-gem "aws-sdk-ec2"
-gem "foreman"
-gem "govuk_app_config", "~>7.0.0"
+gem "govuk_app_config", ">= 7.0.0"
 gem "govuk_message_queue_consumer"
 gem "plek"
 gem "rake"
@@ -19,7 +17,6 @@ group :development, :test do
 end
 
 group :test do
-  gem "climate_control"
   gem "simplecov"
   gem "timecop"
   gem "webmock"

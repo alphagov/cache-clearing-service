@@ -26,6 +26,5 @@ RSpec.configure do |config|
 
   config.after(:example) do
     Timecop.freeze(Time.local(1994))
-    GovukNodes.clear_cache
   end
 end
