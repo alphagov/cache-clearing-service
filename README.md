@@ -1,5 +1,7 @@
 # Cache Clearing Service
 
+> **Cache Clearing Service is retired**
+
 A message queue consumer application which clears the Fastly CDN cache when new content is published. Messages are read from the `published_documents` exchange which carries documents published from all publishing applications.
 
 ## Technical documentation
